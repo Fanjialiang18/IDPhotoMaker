@@ -23,7 +23,7 @@ class MattingDataset(Dataset):
         for img, mat in zip(self.image_file_name_list, self.matte_file_name_list):
             img_name = img.split('/')[-1]
             mat_name = mat.split('/')[-1]
-            assert img_name == mat_name
+            # assert img_name == mat_name
 
         self.transform = transform
 

@@ -76,7 +76,7 @@ if __name__ == '__main__':
         weights = torch.load(ckp_pth, map_location=torch.device('cpu'))
     modnet.load_state_dict(weights)
 
-    pth = 'src/datasets/PPM-100/val/fg/5588688353_3426d4b5d9_o.jpg'
+    pth = 'src/datasets/PPM-100/val/fg/1.jpg'
     img = Image.open(pth)
 
     matte = predit_matte(modnet, img)
