@@ -12,9 +12,10 @@ from models.modnet import MODNet
 if __name__ == '__main__':
     # define cmd arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument('--input-path', type=str, help='path of input images')
-    parser.add_argument('--output-path', type=str, help='path of output images')
-    parser.add_argument('--ckpt-path', type=str, help='path of pre-trained MODNet')
+    parser.add_argument('--input-path', type=str, help='path of input images', default="input")
+    parser.add_argument('--output-path', type=str, help='path of output images', default="output")
+    parser.add_argument('--ckpt-path', type=str, help='path of pre-trained MODNet',
+                        default="pretrained\modnet_photographic_portrait_matting.ckpt")
     args = parser.parse_args()
 
     # check input arguments
@@ -89,6 +90,11 @@ if __name__ == '__main__':
         Image.fromarray(((matte * 255).astype('uint8')), mode='L').save(os.path.join(args.output_path, matte_name))
         matte_org = np.repeat(np.asarray(matte)[:, :, None], 3, axis=2)  # 扩展到 (1080, 1440, 3) 以便和im_org计算
 
-        foreground = im_org * matte_org + np.full(im_org.shape, 255) * (1 - matte_org)  # 计算前景，获得抠像
+        # img = np.zeros([400, 400, 3], np.uint8)
+        img = np.zeros(im_org.shape, np.uint8)
+
+        img[:, :, 0] = np.ones([img.shape[0],img.shape[1]]) * 255  # 0修改第一个通道值使第一个通道值全为255，出现一个蓝色的图片
+        # foreground = im_org * matte_org + np.full(im_org.shape, 255) * (1 - matte_org)  # 计算前景，获得抠像
+        foreground = im_org * matte_org + img* (1 - matte_org)  # 计算前景，获得抠像
         fg_name = im_name.split('.')[0] + '_fg.png'
         Image.fromarray(((foreground).astype('uint8')), mode='RGB').save(os.path.join(args.output_path, fg_name))

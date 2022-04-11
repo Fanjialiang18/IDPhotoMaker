@@ -5,7 +5,7 @@ from torchvision import transforms
 import torch
 import torch.nn.functional as F
 import torch.nn as nn
-
+import os
 
 def predit_matte(modnet: MODNet, im: Image):
     # define image to tensor transform
@@ -76,7 +76,7 @@ if __name__ == '__main__':
         weights = torch.load(ckp_pth, map_location=torch.device('cpu'))
     modnet.load_state_dict(weights)
 
-    pth = 'src/datasets/PPM-100/val/fg/1.jpg'
+    pth = 'input/img_1.png'
     img = Image.open(pth)
 
     matte = predit_matte(modnet, img)
