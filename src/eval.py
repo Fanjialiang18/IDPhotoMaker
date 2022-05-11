@@ -6,6 +6,9 @@ from infer import predit_matte
 import torch.nn as nn
 import torch
 
+'''
+用于模型评估
+'''
 
 def cal_mad(pred, gt):
     diff = pred - gt
@@ -56,11 +59,12 @@ def eval(modnet: MODNet, dataset):
 
 
 if __name__ == '__main__':
-    # create MODNet and load the pre-trained ckpt
+    # create MODNet and load the pre-trained ckpt
     modnet = MODNet(backbone_pretrained=False)
     modnet = nn.DataParallel(modnet)
 
-    ckp_pth = 'pretrained/modnet_photographic_portrait_matting.ckpt'
+    # ckp_pth = 'pretrained/modnet_photographic_portrait_matting.ckpt'
+    ckp_pth = 'pretrained/modnet_custom_portrait_matting_last_epoch_weight.ckpt'
     if torch.cuda.is_available():
         modnet = modnet.cuda()
         weights = torch.load(ckp_pth)

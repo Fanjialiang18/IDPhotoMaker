@@ -64,7 +64,7 @@ def predit_matte(modnet: MODNet, im: Image):
 
 
 if __name__ == '__main__':
-    # create MODNet and load the pre-trained ckpt
+    # create MODNet and load the pre-trained ckpt
     modnet = MODNet(backbone_pretrained=False)
     modnet = nn.DataParallel(modnet)
 
@@ -76,7 +76,7 @@ if __name__ == '__main__':
         weights = torch.load(ckp_pth, map_location=torch.device('cpu'))
     modnet.load_state_dict(weights)
 
-    pth = 'input/img_1.png'
+    pth = 'input/1.jpg'
     img = Image.open(pth)
 
     matte = predit_matte(modnet, img)
