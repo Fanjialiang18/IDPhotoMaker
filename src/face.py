@@ -100,4 +100,5 @@ class Face_Align(object):
 
 if __name__ == "__main__":
     align = Face_Align("src/shape_predictor_68_face_landmarks.dat")
-    align(image_path="input_phone/2.jpg",save_path="test.jpg")
+    # align(image_path="output_phone/1_fg.jpg",save_path="test.jpg")
+    align(image_path="input_phone/(2).jpg",save_path="test.jpg")

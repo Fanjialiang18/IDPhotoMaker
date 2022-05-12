@@ -17,8 +17,8 @@ if __name__ == '__main__':
     warnings.filterwarnings("ignore", category=UserWarning, module="torch.nn.functional")
     # define cmd arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument('--input-path', type=str, help='path of input images', default="input_photo")
-    parser.add_argument('--output-path', type=str, help='path of output images', default="output_photo")
+    parser.add_argument('--input-path', type=str, help='path of input images', default="input_phone")
+    parser.add_argument('--output-path', type=str, help='path of output images', default="output_phone")
     parser.add_argument('--ckpt-path', type=str, help='path of pre-trained MODNet',
                         default="pretrained\modnet_photographic_portrait_matting.ckpt")
     parser.add_argument('--color', type=str, help='color of background', default="blue")
@@ -129,7 +129,7 @@ if __name__ == '__main__':
             img[:, :, 0] = np.ones([img.shape[0], img.shape[1]]) * 255  # 0修改第一个通道值使第一个通道值全为255，出现一个红色的图片
         # foreground = im_org * matte_org + np.full(im_org.shape, 255) * (1 - matte_org)  # 计算前景，获得抠像
         foreground = im_org * matte_org + img * (1 - matte_org)  # 计算前景，获得抠像
-        fg_name = im_name.split('.')[0] + '_fg.png'
+        fg_name = im_name.split('.')[0] + '_fg.jpg'
         Image.fromarray(((foreground).astype('uint8')), mode='RGB').save(os.path.join(args.output_path, fg_name))
         time2 = datetime.datetime.now()
         second2 = time.time()
