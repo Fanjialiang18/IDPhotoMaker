@@ -18,8 +18,8 @@ if __name__ == '__main__':
     warnings.filterwarnings("ignore", category=UserWarning, module="torch.nn.functional")
     # define cmd arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument('--input-path', type=str, help='path of input images', default="input_phone")
-    parser.add_argument('--output-path', type=str, help='path of output images', default="output_phone2")
+    parser.add_argument('--input-path', type=str, help='path of input images', default="input_phone1")
+    parser.add_argument('--output-path', type=str, help='path of output images', default="output_phone1")
     parser.add_argument('--ckpt-path', type=str, help='path of pre-trained MODNet',
                         default="pretrained\modnet_photographic_portrait_matting.ckpt")
     parser.add_argument('--color', type=str, help='color of background', default="blue")
@@ -137,7 +137,7 @@ if __name__ == '__main__':
 
         finalPath=args.output_path+"/"+fg_name
         # print(finalPath)
-        face_align(finalPath, save_path="align2/"+fg_name)
+        face_align(finalPath, save_path="align1/"+fg_name)
 
         time2 = datetime.datetime.now()
         second2 = time.time()
