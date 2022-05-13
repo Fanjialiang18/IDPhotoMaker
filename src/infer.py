@@ -76,7 +76,7 @@ if __name__ == '__main__':
         weights = torch.load(ckp_pth, map_location=torch.device('cpu'))
     modnet.load_state_dict(weights)
 
-    pth = 'input/1.jpg'
+    pth = 'input_phone/2.jpg'
     img = Image.open(pth)
 
     matte = predit_matte(modnet, img)

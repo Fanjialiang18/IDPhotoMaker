@@ -10,6 +10,7 @@ import torch.nn.functional as F
 import torchvision.transforms as transforms
 import datetime
 import warnings
+from align import face_align
 from models.modnet import MODNet
 
 if __name__ == '__main__':
@@ -18,7 +19,7 @@ if __name__ == '__main__':
     # define cmd arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('--input-path', type=str, help='path of input images', default="input_phone")
-    parser.add_argument('--output-path', type=str, help='path of output images', default="output_phone")
+    parser.add_argument('--output-path', type=str, help='path of output images', default="output_phone2")
     parser.add_argument('--ckpt-path', type=str, help='path of pre-trained MODNet',
                         default="pretrained\modnet_photographic_portrait_matting.ckpt")
     parser.add_argument('--color', type=str, help='color of background', default="blue")
@@ -78,6 +79,7 @@ if __name__ == '__main__':
             startTime = time.time()
         print("开始生成证件照,当前时间为:", end="")
         print(time1)
+
         # unify image channels to 3
         im = np.asarray(im)
         if len(im.shape) == 2:
@@ -87,6 +89,7 @@ if __name__ == '__main__':
         elif im.shape[2] == 4:
             im = im[:, :, 0:3]
         im_org = im  # 保存numpy原始数组 (1080,1440,3)
+
         # convert image to PyTorch tensor
         im = Image.fromarray(im)
         im = im_transform(im)
@@ -131,6 +134,11 @@ if __name__ == '__main__':
         foreground = im_org * matte_org + img * (1 - matte_org)  # 计算前景，获得抠像
         fg_name = im_name.split('.')[0] + '_fg.jpg'
         Image.fromarray(((foreground).astype('uint8')), mode='RGB').save(os.path.join(args.output_path, fg_name))
+
+        finalPath=args.output_path+"/"+fg_name
+        # print(finalPath)
+        face_align(finalPath, save_path="align2/"+fg_name)
+
         time2 = datetime.datetime.now()
         second2 = time.time()
         endTime = second2
@@ -141,6 +149,8 @@ if __name__ == '__main__':
         effect += efficiency
         print("{:.2f}".format(efficiency), end="")
         print("MB/S", end="\n\n")
+
+
     effect = effect / counts
     print("总处理照片数为" + str(counts) + "张")
     print("总处理照片大小为",end="")
